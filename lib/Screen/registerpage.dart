@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:testdriving_app/Screen/homepage.dart';
 class RegisterPage extends StatefulWidget {
   @override
   _RegisterPageState createState() => _RegisterPageState();
@@ -16,6 +18,20 @@ class _RegisterPageState extends State<RegisterPage> {
     _email.dispose();
     _mobile.dispose();
     _address.dispose();
+  }
+
+  AppShareddata() async{
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.setString('user', _user.text);
+    await prefs.setString('email', _email.text);
+    await prefs.setString('mobile', _mobile.text);
+    await prefs.setString('address', _address.text);
+    print(prefs.get('user'));
+    print(prefs.get('email'));
+    print(prefs.get('mobile'));
+    print(prefs.get('address'));
+    String vat=prefs.get('address');
+    print('Pressed $vat times.');
   }
   @override
   Widget build(BuildContext context) {
@@ -74,7 +90,7 @@ class _RegisterPageState extends State<RegisterPage> {
                       borderRadius: BorderRadius.all(Radius.circular(32.0))
                   )
               ),
-             
+
 
             )      ],
         ),
@@ -86,7 +102,8 @@ class _RegisterPageState extends State<RegisterPage> {
           RaisedButton(
             hoverColor: Colors.redAccent,
             onPressed: (){
-
+              AppShareddata();
+          Navigator.push(context, MaterialPageRoute(builder: (context)=>Homepage()));
             },
             child: Text('Register',textAlign: TextAlign.center,style: TextStyle(
                 fontSize: 20,color: Colors.white
@@ -111,14 +128,12 @@ class _RegisterPageState extends State<RegisterPage> {
 
           ),
           RaisedButton(
-
             hoverColor: Colors.redAccent,
             onPressed: (){},
             child: Text('Facebook',textAlign: TextAlign.center,style: TextStyle(
                 fontSize: 20,color: Colors.white
             ),),
             color: Colors.red,
-
           ),
         ],
       ),
